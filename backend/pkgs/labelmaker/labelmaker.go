@@ -155,7 +155,7 @@ func GenerateLabel(w io.Writer, params *GenerateParameters) error {
 	qr.DisableBorder = true
 	qrImage := qr.Image(params.QrSize)
 
-	regularFontBytes, err := ioutil.ReadFile("assets/fonts/SourceHanSansSC-Regular.otf")
+	regularFontBytes, err := ioutil.ReadFile("assets/fonts/SourceHanSansSC-Regular.ttf")
 	if err != nil {
 	    return fmt.Errorf("failed to load regular font: %v", err)
 	}
@@ -165,6 +165,7 @@ func GenerateLabel(w io.Writer, params *GenerateParameters) error {
 	}
 
 	// 使用同一字体加粗
+
 	boldFont := regularFont
 
 	regularFace := truetype.NewFace(regularFont, &truetype.Options{

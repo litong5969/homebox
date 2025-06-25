@@ -80,6 +80,9 @@ RUN mkdir /app
 COPY --from=builder /go/bin/api /app
 RUN chmod +x /app/api
 
+# ✅ Copy Chinese font into final image
+COPY ./assets/fonts /app/assets/fonts
+
 # Labels and configuration for the final image
 LABEL Name=homebox Version=0.0.1
 LABEL org.opencontainers.image.source="https://github.com/sysadminsmedia/homebox"
