@@ -21,8 +21,7 @@ import (
 	"github.com/skip2/go-qrcode"
 	"github.com/sysadminsmedia/homebox/backend/internal/sys/config"
 	"golang.org/x/image/font"
-	"golang.org/x/image/font/gofont/gobold"
-	"golang.org/x/image/font/gofont/gomedium"
+	"io/ioutil"
 )
 
 type GenerateParameters struct {
@@ -156,15 +155,17 @@ func GenerateLabel(w io.Writer, params *GenerateParameters) error {
 	qr.DisableBorder = true
 	qrImage := qr.Image(params.QrSize)
 
-	regularFont, err := truetype.Parse(gomedium.TTF)
+	regularFontBytes, err := ioutil.ReadFile("assets/fonts/SourceHanSansSC-Regular.otf")
 	if err != nil {
-		return err
+	    return fmt.Errorf("failed to load regular font: %v", err)
+	}
+	regularFont, err := truetype.Parse(regularFontBytes)
+	if err != nil {
+	    return fmt.Errorf("failed to parse regular font: %v", err)
 	}
 
-	boldFont, err := truetype.Parse(gobold.TTF)
-	if err != nil {
-		return err
-	}
+	// 使用同一字体加粗
+	boldFont := regularFont
 
 	regularFace := truetype.NewFace(regularFont, &truetype.Options{
 		Size: params.DescriptionFontSize,
